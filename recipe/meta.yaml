@@ -25,7 +25,9 @@ requirements:
   run:
     - python
     - amply
-    - coincbc
+    # We use glpk on Windows because coincbc produces conflict on Windows.
+    - coincbc  # [not win]
+    - glpk  # [win]
 
 test:
   imports:
