@@ -24,7 +24,6 @@ requirements:
     - wheel
   run:
     - python
-    - amply
     # We use glpk on Windows because coincbc produces conflict on Windows.
     - coincbc  # [not win]
     - glpk  # [win]
@@ -36,8 +35,10 @@ test:
   commands:
     - pip check
     - python -c "import pulp; assert pulp.LpSolverDefault, 'default solver not available'"
+    - pulptest
   requires:
     - pip
+    - glpk
 
 about:
   home: https://github.com/coin-or/pulp
