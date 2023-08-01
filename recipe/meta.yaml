@@ -11,22 +11,22 @@ source:
 build:
   number: 0
   script:
-    - {{ PYTHON }} -m pip install . -vv
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
     - rm "${SP_DIR}/pulp/solverdir/CoinMP.dll"  # [not win]
+  entry_points:
+    - pulptest = pulp.tests.run_tests:pulpTestAll
 
 requirements:
-  build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
   host:
     - pip
     - python
+    - setuptools
+    - wheel
   run:
-    - amply >=0.1.2
-    # We use glpk on Windows because coincbc is only packaged on Unix, currently.
+    - python
+    # We use glpk on Windows because coincbc produces conflict on Windows.
     - coincbc  # [not win]
     - glpk  # [win]
-    - python
 
 test:
   imports:
@@ -35,19 +35,24 @@ test:
   commands:
     - pip check
     - python -c "import pulp; assert pulp.LpSolverDefault, 'default solver not available'"
+    - pulptest
   requires:
     - pip
+    - glpk  # [not s390x]
 
 about:
+  home: https://github.com/coin-or/pulp
   summary: |
     PuLP is an LP modeler written in python. PuLP can generate MPS or LP files
     and call GLPK, COIN CLP/CBC, CPLEX, and GUROBI to solve linear problems.
-  home: https://github.com/coin-or/pulp
+  description: |
+    PuLP is an LP modeler written in python. PuLP can generate MPS or LP files
+    and call GLPK, COIN CLP/CBC, CPLEX, and GUROBI to solve linear problems.
   license: MIT
   license_file: LICENSE
-  doc_url: https://pythonhosted.org/PuLP/
-  dev_url: https://github.com/coin-or/pulp
   license_family: MIT
+  doc_url: https://coin-or.github.io/pulp/
+  dev_url: https://github.com/coin-or/pulp
 
 extra:
   recipe-maintainers:
