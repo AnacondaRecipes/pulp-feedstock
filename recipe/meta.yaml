@@ -10,10 +10,10 @@ source:
   sha256: 389a6ff1dc34ec4b093f34f7a9fa3553743ff0ea99b2a423e9f0dd16940f63d2
 
 build:
+  skip: true  # [py<39]
   number: 0
   script:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-    - rm "${SP_DIR}/pulp/solverdir/CoinMP.dll"  # [not win]
   entry_points:
     - pulptest = pulp.tests.run_tests:pulpTestAll
 
