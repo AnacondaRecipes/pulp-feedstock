@@ -16,6 +16,14 @@ build:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   entry_points:
     - pulptest = pulp.tests.run_tests:pulpTestAll
+  missing_dso_whitelist:
+  # for cbc binaries
+    - /lib64/libpthread.so.0  # [linux]
+    - /lib64/librt.so.1       # [linux]
+    - /lib64/libdl.so.2       # [linux]
+    - lib/libgcc_s.so.1       # [linux]
+    - lib/libstdc++.so.6      # [linux]
+    - /lib64/libm.so.6        # [linux]
 
 requirements:
   host:
