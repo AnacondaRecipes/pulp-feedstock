@@ -31,11 +31,11 @@ requirements:
     - python
     - setuptools
     - wheel
-  run:
-    - python
     # We use glpk on Windows because coincbc produces conflict on Windows.
     - coincbc  # [not win]
     - glpk  # [win]
+  run:
+    - python
 
 test:
   imports:
