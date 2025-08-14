@@ -6,8 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 389a6ff1dc34ec4b093f34f7a9fa3553743ff0ea99b2a423e9f0dd16940f63d2
+  url: https://github.com/coin-or/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
+  sha256: 89e16c223bc7e1fbab8f490bcdf4752adb73ba15263b4ffe4474f6f945f4b140
 
 build:
   skip: true  # [py<39]
