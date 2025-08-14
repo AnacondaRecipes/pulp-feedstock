@@ -39,7 +39,7 @@ test:
     - pulptest
   requires:
     - pip
-    - glpk  # [not s390x]
+    - glpk
 
 about:
   home: https://github.com/coin-or/pulp
