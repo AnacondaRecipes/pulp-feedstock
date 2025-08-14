@@ -27,7 +27,8 @@ build:
     - /lib64/libc.so.6        # [linux]
     - $RPATH/libpthread.so.0  # [linux]
     - $RPATH/librt.so.1       # [linux]
-
+    - $RPATH/libm.so.6        # [linux]
+    - $RPATH/libc.so.6        # [linux]
 requirements:
   host:
     - pip
