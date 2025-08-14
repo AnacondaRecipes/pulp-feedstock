@@ -29,6 +29,7 @@ build:
     - $RPATH/librt.so.1       # [linux]
     - $RPATH/libm.so.6        # [linux]
     - $RPATH/libc.so.6        # [linux]
+    - $RPATH/libdl.so.2       # [linux]
 requirements:
   host:
     - pip
