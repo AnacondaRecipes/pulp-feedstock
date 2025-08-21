@@ -1,44 +1,64 @@
-{% set version = "2.7.0" %}
+{% set name = "pulp" %}
+{% set version = "3.2.2" %}
 
 package:
-  name: pulp
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/P/PuLP/PuLP-{{ version }}.tar.gz
-  sha256: e73ee6b32d639c9b8cf4b4aded334ba158be5f8313544e056f796ace0a10ae63
+  url: https://github.com/coin-or/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
+  sha256: 89e16c223bc7e1fbab8f490bcdf4752adb73ba15263b4ffe4474f6f945f4b140
 
 build:
+  skip: true  # [py<39]
   number: 0
   script:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-    - rm "${SP_DIR}/pulp/solverdir/CoinMP.dll"  # [not win]
   entry_points:
     - pulptest = pulp.tests.run_tests:pulpTestAll
-
+  missing_dso_whitelist:
+  # for cbc binaries
+    - /lib64/libpthread.so.0  # [linux]
+    - /lib64/librt.so.1       # [linux]
+    - /lib64/libdl.so.2       # [linux]
+    - lib/libgcc_s.so.1       # [linux]
+    - lib/libstdc++.so.6      # [linux]
+    - /lib64/libm.so.6        # [linux]
+    - /lib64/libc.so.6        # [linux]
+    - $RPATH/libpthread.so.0  # [linux]
+    - $RPATH/librt.so.1       # [linux]
+    - $RPATH/libm.so.6        # [linux]
+    - $RPATH/libc.so.6        # [linux]
+    - $RPATH/libdl.so.2       # [linux]
 requirements:
   host:
     - pip
     - python
     - setuptools
     - wheel
-  run:
-    - python
     # We use glpk on Windows because coincbc produces conflict on Windows.
     - coincbc  # [not win]
     - glpk  # [win]
+  run:
+    - python
 
 test:
   imports:
     - pulp
     - pulp.solverdir
+    - pulp.apis
+    - pulp.constants
+    - pulp.pulp
+    - pulp.sparse
+    - pulp.tests
+    - pulp.utilities
   commands:
     - pip check
     - python -c "import pulp; assert pulp.LpSolverDefault, 'default solver not available'"
     - pulptest
   requires:
     - pip
-    - glpk  # [not s390x]
+    - glpk  # [win]
 
 about:
   home: https://github.com/coin-or/pulp
@@ -46,8 +66,11 @@ about:
     PuLP is an LP modeler written in python. PuLP can generate MPS or LP files
     and call GLPK, COIN CLP/CBC, CPLEX, and GUROBI to solve linear problems.
   description: |
-    PuLP is an LP modeler written in python. PuLP can generate MPS or LP files
-    and call GLPK, COIN CLP/CBC, CPLEX, and GUROBI to solve linear problems.
+    PuLP is an linear and mixed integer programming modeler written in Python. 
+    With PuLP, it is simple to create MILP optimisation problems and solve
+    them with the latest open-source (or proprietary) solvers. PuLP can
+    generate MPS or LP files and call solvers such as GLPK, COIN-OR CLP/CBC,
+    CPLEX, GUROBI, MOSEK, XPRESS, CHOCO, MIPCL, HiGHS, SCIP/FSCIP.
   license: MIT
   license_file: LICENSE
   license_family: MIT
