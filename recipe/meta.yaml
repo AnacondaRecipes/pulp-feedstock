@@ -46,13 +46,19 @@ test:
   imports:
     - pulp
     - pulp.solverdir
+    - pulp.apis
+    - pulp.constants
+    - pulp.pulp
+    - pulp.sparse
+    - pulp.tests
+    - pulp.utilities
   commands:
     - pip check
     - python -c "import pulp; assert pulp.LpSolverDefault, 'default solver not available'"
     - pulptest
   requires:
     - pip
-    - glpk
+    - glpk  # [win]
 
 about:
   home: https://github.com/coin-or/pulp
