@@ -1,16 +1,15 @@
 {% set name = "pulp" %}
-{% set version = "3.2.2" %}
+{% set version = "3.3.0" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/coin-or/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 89e16c223bc7e1fbab8f490bcdf4752adb73ba15263b4ffe4474f6f945f4b140
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 7eb99b9ce7beeb8bbb7ea9d1c919f02f003ab7867e0d1e322f2f2c26dd31c8ba
 
 build:
-  skip: true  # [py<39]
   number: 0
   script:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
@@ -30,12 +29,13 @@ build:
     - $RPATH/libm.so.6        # [linux]
     - $RPATH/libc.so.6        # [linux]
     - $RPATH/libdl.so.2       # [linux]
+  skip: true  # [py<39]
+
 requirements:
   host:
     - pip
     - python
-    - setuptools
-    - wheel
+    - setuptools >=77
     # We use glpk on Windows because coincbc produces conflict on Windows.
     - coincbc  # [not win]
     - glpk  # [win]
@@ -74,7 +74,7 @@ about:
   license: MIT
   license_file: LICENSE
   license_family: MIT
-  doc_url: https://coin-or.github.io/pulp/
+  doc_url: https://coin-or.github.io/pulp
   dev_url: https://github.com/coin-or/pulp
 
 extra:
