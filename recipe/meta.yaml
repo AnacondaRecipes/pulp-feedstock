@@ -58,6 +58,7 @@ test:
     - pulptest
   requires:
     - pip
+    - coincbc  # [not win]
     - glpk  # [win]
 
 about:
