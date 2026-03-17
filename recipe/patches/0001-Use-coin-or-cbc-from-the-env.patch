@@ -1,0 +1,25 @@
+From 7c3de72293659f9f888dcd396ef29753551495b8 Mon Sep 17 00:00:00 2001
+From: Andrii Osipov <aosipov@anaconda.com>
+Date: Tue, 17 Mar 2026 06:34:32 -0700
+Subject: [PATCH] Use coin-or-cbc from the env
+
+---
+ pulp/apis/coin_api.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pulp/apis/coin_api.py b/pulp/apis/coin_api.py
+index c69d278..0207840 100644
+--- a/pulp/apis/coin_api.py
++++ b/pulp/apis/coin_api.py
+@@ -57,7 +57,7 @@ coinMP_path = ["libCoinMP.so"]
+ if operating_system == "osx":
+     arch = "i64"
+ pulp_cbc_path = os.path.join(
+-    os.path.dirname(__file__), f"../solverdir/cbc/{operating_system}/{arch}/{cbc_path}"
++    os.path.dirname(__file__), f"cbc"
+ )
+ 
+ 
+-- 
+2.39.3 (Apple Git-146)
+

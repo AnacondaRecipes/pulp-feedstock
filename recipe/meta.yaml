@@ -8,11 +8,15 @@ package:
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 7eb99b9ce7beeb8bbb7ea9d1c919f02f003ab7867e0d1e322f2f2c26dd31c8ba
+  patches:
+    - patches/0001-Use-coin-or-cbc-from-the-env.patch  # [not win]
 
 build:
   number: 0
   script:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+    # Remove bundled cbc binaries, using coin-or-cbc provided cbc instead:
+    - rm -rf "${SP_DIR}/pulp/solverdir/cbc"  # [not win]
   entry_points:
     - pulptest = pulp.tests.run_tests:pulpTestAll
   missing_dso_whitelist:
@@ -36,8 +40,8 @@ requirements:
     - pip
     - python
     - setuptools >=77
+    - coin-or-cbc  # [not win]
     # We use glpk on Windows because coincbc produces conflict on Windows.
-    - coincbc  # [not win]
     - glpk  # [win]
   run:
     - python
@@ -58,7 +62,7 @@ test:
     - pulptest
   requires:
     - pip
-    - coincbc  # [not win]
+    - coin-or-cbc  # [not win]
     - glpk  # [win]
 
 about:
