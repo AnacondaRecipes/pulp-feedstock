@@ -17,22 +17,9 @@ build:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
     # Remove bundled cbc binaries, using coin-or-cbc provided cbc instead:
     - rm -rf "${SP_DIR}/pulp/solverdir/cbc"  # [not win]
+    - rd /s /q "%SP_DIR%\pulp\solverdir\cbc"  # [win]
   entry_points:
     - pulptest = pulp.tests.run_tests:pulpTestAll
-  missing_dso_whitelist:
-  # for cbc binaries
-    - /lib64/libpthread.so.0  # [linux]
-    - /lib64/librt.so.1       # [linux]
-    - /lib64/libdl.so.2       # [linux]
-    - lib/libgcc_s.so.1       # [linux]
-    - lib/libstdc++.so.6      # [linux]
-    - /lib64/libm.so.6        # [linux]
-    - /lib64/libc.so.6        # [linux]
-    - $RPATH/libpthread.so.0  # [linux]
-    - $RPATH/librt.so.1       # [linux]
-    - $RPATH/libm.so.6        # [linux]
-    - $RPATH/libc.so.6        # [linux]
-    - $RPATH/libdl.so.2       # [linux]
   skip: true  # [py<39]
 
 requirements:
@@ -40,11 +27,11 @@ requirements:
     - pip
     - python
     - setuptools >=77
-    - coin-or-cbc  # [not win]
-    # We use glpk on Windows because coincbc produces conflict on Windows.
-    - glpk  # [win]
   run:
     - python
+    # Unvendor pulp precompiled solver candidates:
+    - coin-or-cbc  # [not win]
+    - glpk  # [win]
 
 test:
   imports:
@@ -62,8 +49,6 @@ test:
     - pulptest
   requires:
     - pip
-    - coin-or-cbc  # [not win]
-    - glpk  # [win]
 
 about:
   home: https://github.com/coin-or/pulp
